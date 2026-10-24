@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breaksheet Updater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+[hidden]{display:none!important}
+/* Layout: one narrow column: two upload boxes, download button, then the breaksheet itself */
+:root{
+  --bg:#F4F5F1; --surface:#FFFFFF; --ink:#18201D; --muted:#5B6661; --line:#DCE0D9; --soft:#ECEFE9;
+  --accent:#2B59C3; --accent-ink:#FFFFFF; --accent-soft:#E3EAFA; --swp:#6A3E9E; --swp-soft:#EEE6F8; --err:#B3261E;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Public Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121614; --surface:#1A201D; --ink:#E7ECE8; --muted:#9AA6A0; --line:#2C3531; --soft:#222925;
+  --accent:#7FA2F2; --accent-ink:#0E1630; --accent-soft:#1F2A47; --swp:#C4A3F0; --swp-soft:#2A2040; --err:#F28B82; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121614; --surface:#1A201D; --ink:#E7ECE8; --muted:#9AA6A0; --line:#2C3531; --soft:#222925;
+  --accent:#7FA2F2; --accent-ink:#0E1630; --accent-soft:#1F2A47; --swp:#C4A3F0; --swp-soft:#2A2040; --err:#F28B82; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:720px;margin:0 auto;display:grid;gap:22px}
+h1,h2{font-family:var(--f-display);margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1{font-size:1.9rem;line-height:1.1}
+h2{font-size:1.25rem}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ups{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.up{display:grid;gap:4px;background:var(--surface);border:1.5px dashed var(--line);border-radius:12px;padding:18px 16px;cursor:pointer;transition:border-color .15s,background .15s}
+.up:hover,.up.drag{border-color:var(--accent);background:var(--accent-soft)}
+.up.done{border-style:solid}
+.up b{font-weight:600}
+.up .st{font-size:.85rem;color:var(--muted);word-break:break-word}
+.up .st.err{color:var(--err)}
+.up .st.ok{color:var(--ink)}
+.dl{justify-self:start;border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;border-radius:9px;padding:11px 20px;cursor:pointer;font-size:1rem}
+.dl:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.msg{font-size:.86rem;color:var(--muted)}
+.msg.err{color:var(--err)}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.day-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.day-h span{font-family:var(--f-mono);font-size:.85rem;color:var(--muted)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+td{padding:7px 16px;border-top:1px solid var(--soft)}
+tr:first-child td{border-top:0}
+td.t{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted);width:1%}
+td.b{font-family:var(--f-mono);color:var(--muted);text-align:right;white-space:nowrap;width:1%}
+tr.swp td{background:var(--swp-soft)}
+tr.swp td.t{color:var(--swp)}
+.note{display:block;font-size:.76rem;color:var(--swp)}
+.empty{padding:28px 16px;color:var(--muted);text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+@media (max-width:560px){.ups{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>Breaksheet Updater</h1>
+
+  <div class="ups">
+    <label class="up" id="up-crew" for="in-crew">
+      <b>Crew Schedule Change Report</b>
+      <span class="st" id="st-crew">Tap to choose the PDF</span>
+      <input type="file" id="in-crew" accept=".pdf" hidden>
+    </label>
+    <label class="up" id="up-swap" for="in-swap">
+      <b>Offer and Swap Report</b>
+      <span class="st" id="st-swap">Tap to choose the PDF</span>
+      <input type="file" id="in-swap" accept=".pdf" hidden>
+    </label>
+  </div>
+
+  <div class="row">
+    <button class="dl" id="dl" disabled>Download breaksheet</button>
+    <span class="msg" id="msg"></span>
+  </div>
+
+  <div id="out" style="display:grid;gap:16px"><p class="empty">Your breaksheet will appear here once the reports are added.</p></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script>
+// ===== Breaksheet updater core logic (pure JS, no DOM) =====
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const TIME_RE = /^\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}$/;
+const DATE_RE = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+
+function undouble(s) {
+  if (s === '--') return '-';
+  if (/\s/.test(s)) return s.split(/\s+/).map(undouble).join(' ');
+  if (s.length < 4 || s.length % 2) return s;
+  for (let i = 0; i < s.length; i += 2) if (s[i] !== s[i + 1]) return s;
+  let o = ''; for (let i = 0; i < s.length; i += 2) o += s[i];
+  return o;
+}
+function normShift(s) {
+  const m = String(s || '').match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+  if (!m) return null;
+  const p = (h) => String(h).padStart(2, '0');
+  return `${p(m[1])}:${m[2]} - ${p(m[3])}:${m[4]}`;
+}
+function startMins(shift) {
+  const m = String(shift || '').match(/(\d{1,2}):(\d{2})/);
+  return m ? (+m[1]) * 60 + (+m[2]) : 9999;
+}
+function parseDMY(s) {
+  const m = String(s || '').trim().match(DATE_RE);
+  if (!m) return null;
+  return Date.UTC(+m[3], +m[2] - 1, +m[1]);
+}
+function parseTS(s) { // "30/09/2026 22:41 BST"
+  const m = String(s || '').match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{1,2}):(\d{2})/);
+  if (!m) return 0;
+  return Date.UTC(+m[3], +m[2] - 1, +m[1], +m[4], +m[5]);
+}
+function fmtDate(ms) {
+  const d = new Date(ms);
+  return `${String(d.getUTCDate()).padStart(2, '0')}/${String(d.getUTCMonth() + 1).padStart(2, '0')}/${d.getUTCFullYear()}`;
+}
+function dayIndexOfDate(ms) { return (new Date(ms).getUTCDay() + 6) % 7; } // Monday=0
+
+// ---- Names ----
+function normName(s) {
+  return String(s || '').toLowerCase().replace(/[‘’`´]/g, "'")
+    .replace(/[^a-z' ]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function sameName(a, b) {
+  const x = normName(a), y = normName(b);
+  if (!x || !y) return false;
+  if (x === y) return true;
+  if (x.replace(/[' ]/g, '') === y.replace(/[' ]/g, '')) return true;
+  const ta = x.split(' '), tb = y.split(' ');
+  const [s, l] = ta.length <= tb.length ? [ta, tb] : [tb, ta];
+  if (s.length < 2) return false;
+  return s.every(t => l.includes(t));
+}
+
+// ---- PDF table parsing ----
+// items: [{str, x0, x1, yc, h}] for one page (y grows downward)
+function parsePageRows(items) {
+  items = items.map(it => ({ ...it, str: undouble(String(it.str).trim()) })).filter(it => it.str);
+  const anchors = items.filter(it => DAYS.includes(it.str)).sort((a, b) => a.yc - b.yc);
+  if (!anchors.length) return [];
+  const gaps = [];
+  for (let i = 1; i < anchors.length; i++) gaps.push(anchors[i].yc - anchors[i - 1].yc);
+  const minHalf = gaps.length ? Math.min(...gaps) / 2 : 12;
+  const rows = [];
+  anchors.forEach((a, i) => {
+    const up = i > 0 ? (a.yc - anchors[i - 1].yc) / 2 : minHalf;
+    const down = i < anchors.length - 1 ? (anchors[i + 1].yc - a.yc) / 2 : minHalf;
+    const band = items.filter(it => it.yc > a.yc - up && it.yc <= a.yc + down);
+    rows.push(cellsFromBand(band));
+  });
+  return rows;
+}
+function cellsFromBand(band) {
+  const sorted = [...band].sort((a, b) => a.x0 - b.x0);
+  const cells = [];
+  for (const it of sorted) {
+    const gapTol = Math.max(2, (it.h || 8) * 0.6);
+    let target = null;
+    for (const c of cells) {
+      // same cell if horizontally overlapping, or close on the same visual line
+      const overlap = it.x0 <= c.x1 + 0.5 && it.x1 >= c.x0 - 0.5;
+      const sameLineNear = c.items.some(o => Math.abs(o.yc - it.yc) < (it.h || 8) * 0.5 && it.x0 - o.x1 < gapTol && it.x0 - o.x1 > -1);
+      if (overlap || sameLineNear) { target = c; break; }
+    }
+    if (target) { target.items.push(it); target.x0 = Math.min(target.x0, it.x0); target.x1 = Math.max(target.x1, it.x1); }
+    else cells.push({ x0: it.x0, x1: it.x1, items: [it] });
+  }
+  cells.sort((a, b) => a.x0 - b.x0);
+  return cells.map(c => {
+    const its = [...c.items].sort((a, b) => (Math.abs(a.yc - b.yc) < (a.h || 8) * 0.5 ? a.x0 - b.x0 : a.yc - b.yc));
+    return its.map(i => i.str).join(' ').replace(/\s+/g, ' ').trim();
+  });
+}
+
+function detectReportType(allText) {
+  const t = allText.replace(/\s+/g, ' ');
+  if (/Offer\s*and\s*Swap/i.test(t) || /Swap Report/i.test(t)) return 'swap';
+  if (/Schedule Change/i.test(t)) return 'crew';
+  return null;
+}
+function parseRange(allText) {
+  const m = allText.replace(/\s+/g, ' ').match(/For\s+(\d{2}\/\d{2}\/\d{4})\s*-+\s*(\d{2}\/\d{2}\/\d{4})/i);
+  if (!m) return null;
+  return { from: parseDMY(m[1]), to: parseDMY(m[2]) };
+}
+
+// cells -> record. Works for both reports, from the Day column onward:
+// Day, Date, PrevEmp, PrevShift, CurEmp, CurShift, ApprovedBy, InitBy, EmpMgr, Action, Source, DateTime
+function rowToRecord(cells) {
+  const di = cells.findIndex(c => DAYS.includes(c));
+  if (di < 0) return null;
+  const c = cells.slice(di);
+  if (c.length < 12) return { error: 'Expected 12 columns, got ' + c.length, raw: cells.join(' | ') };
+  const dash = v => (v === '-' || v === '' ? null : v);
+  const rec = {
+    day: c[0], date: parseDMY(c[1]),
+    prevEmp: dash(c[2]), prevShift: normShift(c[3]),
+    curEmp: dash(c[4]), curShift: normShift(c[5]),
+    approvedBy: dash(c[6]), initBy: dash(c[7]), empMgr: dash(c[8]),
+    action: c[9], source: c[10], ts: parseTS(c.slice(11).join(' ')), tsText: c.slice(11).join(' '),
+    index: di > 0 ? cells[0] : null, raw: cells.join(' | '),
+  };
+  if (!rec.date) return { error: 'Could not read date', raw: rec.raw };
+  return rec;
+}
+
+// pages: array of item arrays
+function parseReport(pages) {
+  const allText = pages.map(p => p.map(i => undouble(String(i.str).trim())).join(' ')).join(' ');
+  const type = detectReportType(allText);
+  const range = parseRange(allText);
+  const records = [], errors = [];
+  let order = 0;
+  for (const items of pages) for (const cells of parsePageRows(items)) {
+    const r = rowToRecord(cells);
+    if (!r) continue;
+    if (r.error) { errors.push(r); continue; }
+    r.order = order++;
+    records.push(r);
+  }
+  // Swap report: carry index number down to continuation rows
+  let idx = null;
+  for (const r of records) { if (r.index) idx = r.index; else r.index = idx; }
+  return { type, range, records, errors };
+}
+
+// ---- Breaksheet model ----
+// sheets: [{name, dayIndex, rows:[{name, shift, d, e}]}], weekStart (ms UTC, Monday)
+
+// Build proposed change items from parsed reports
+function buildChanges(model, reports, opts) {
+  const items = [];
+  const weekStart = model.weekStart;
+  const inWeek = (ms) => weekStart != null && ms >= weekStart && ms < weekStart + 7 * 864e5;
+  const allRecs = reports.flatMap(r => r.records);
+  const anyInWeek = allRecs.some(r => inWeek(r.date));
+  const matchByWeekday = opts.matchMode === 'weekday' || (opts.matchMode === 'auto' && !anyInWeek);
+  const dayFor = (ms) => {
+    if (!matchByWeekday) return inWeek(ms) ? Math.round((ms - weekStart) / 864e5) : null;
+    return dayIndexOfDate(ms);
+  };
+  const inRange = (rep, ms) => !rep.range || (ms >= rep.range.from && ms <= rep.range.to);
+
+  // Crew schedule change report -> net result per (date, employee)
+  for (const rep of reports.filter(r => r.type === 'crew')) {
+    const groups = new Map();
+    const recs = [...rep.records].sort((a, b) => a.ts - b.ts || a.order - b.order);
+    const keyOf = (date, name) => {
+      for (const [k, g] of groups) if (g.date === date && sameName(g.name, name)) return k;
+      const k = date + '|' + normName(name); groups.set(k, { date, name, shifts: [], events: [] }); return k;
+    };
+    for (const r of recs) {
+      const act = r.action.toLowerCase();
+      if (act.includes('add')) {
+        if (!r.curEmp || !r.curShift) continue;
+        const g = groups.get(keyOf(r.date, r.curEmp));
+        if (!g.shifts.includes(r.curShift)) g.shifts.push(r.curShift);
+        g.events.push(r);
+      } else if (act.includes('delete') || act.includes('remove')) {
+        if (!r.prevEmp) continue;
+        const g = groups.get(keyOf(r.date, r.prevEmp));
+        g.shifts = g.shifts.filter(s => s !== r.prevShift);
+        g.removedShifts = (g.removedShifts || []).concat(r.prevShift);
+        g.events.push(r);
+      } else if (act.includes('change') || act.includes('edit') || act.includes('update')) {
+        if (r.prevEmp) {
+          const g = groups.get(keyOf(r.date, r.prevEmp));
+          g.shifts = g.shifts.filter(s => s !== r.prevShift);
+          g.events.push(r);
+        }
+        if (r.curEmp && r.curShift) {
+          const g2 = groups.get(keyOf(r.date, r.curEmp));
+          if (!g2.shifts.includes(r.curShift)) g2.shifts.push(r.curShift);
+          if (!g2.events.includes(r)) g2.events.push(r);
+        }
+      }
+    }
+    for (const g of groups.values()) {
+      const dayIndex = dayFor(g.date);
+      const rng = inRange(rep, g.date);
+      items.push({
+        kind: 'set', source: 'Crew Schedule Change', date: g.date, dayIndex, name: g.name,
+        shifts: g.shifts, events: g.events,
+        lastTs: Math.max(...g.events.map(e => e.ts)),
+        defaultOn: dayIndex != null && rng,
+        note: dayIndex == null ? 'Date is outside this breaksheet’s week' : (!rng ? 'Outside the report’s date range (' + fmtDate(rep.range.from) + (rep.range.to !== rep.range.from ? ' – ' + fmtDate(rep.range.to) : '') + ')' : ''),
+      });
+    }
+  }
+
+  // Shift offer & swap report -> approved / reassigned moves
+  for (const rep of reports.filter(r => r.type === 'swap')) {
+    for (const r of rep.records) {
+      const act = r.action.toLowerCase();
+      const final = act.includes('reassign') || act.includes('approved') || act.includes('accepted');
+      if (!final || !r.curEmp || !r.prevEmp) continue;
+      if (act.includes('cancel') || act.includes('declin') || act.includes('reject')) continue;
+      const dayIndex = dayFor(r.date);
+      const rng = inRange(rep, r.date);
+      items.push({
+        kind: 'move', source: 'Offer & Swap', date: r.date, dayIndex,
+        from: r.prevEmp, fromShift: r.prevShift, to: r.curEmp, toShift: r.curShift || r.prevShift,
+        approvedBy: r.approvedBy, action: r.action, index: r.index, events: [r], lastTs: r.ts,
+        defaultOn: dayIndex != null && rng,
+        note: dayIndex == null ? 'Date is outside this breaksheet’s week' : (!rng ? 'Outside the report’s date range' : ''),
+      });
+    }
+  }
+  // crew first, then swaps; each in time order
+  items.sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'set' ? -1 : 1) || a.lastTs - b.lastTs);
+  items.forEach((it, i) => { it.id = 'c' + i; it.on = it.defaultOn; });
+  return { items, matchByWeekday, anyInWeek };
+}
+
+function canonicalName(model, name) {
+  for (const s of model.sheets) for (const r of s.rows) if (sameName(r.name, name)) return r.name.trim();
+  return String(name).trim();
+}
+function insertSorted(rows, row) {
+  const st = startMins(row.shift);
+  let pos = rows.length;
+  // keep overnight (23:00+) block at the end; insert after the last row starting at or before this time
+  for (let i = rows.length - 1; i >= 0; i--) { if (startMins(rows[i].shift) <= st) { pos = i + 1; break; } if (i === 0) pos = 0; }
+  rows.splice(pos, 0, row);
+}
+
+// Apply enabled items; returns new sheets + per-item outcome
+function applyChanges(model, items) {
+  const sheets = model.sheets.map(s => ({ ...s, rows: s.rows.map(r => ({ ...r, status: 'same' })) , removed: [] }));
+  const results = {};
+  for (const it of items) {
+    if (!it.on || it.dayIndex == null) { results[it.id] = { outcome: 'skipped' }; continue; }
+    const sh = sheets.find(s => s.dayIndex === it.dayIndex);
+    if (!sh) { results[it.id] = { outcome: 'error', msg: 'No sheet for ' + DAYS[it.dayIndex] }; continue; }
+    if (it.kind === 'set') {
+      const existing = sh.rows.filter(r => sameName(r.name, it.name));
+      const before = existing.map(r => normShift(r.shift)).filter(Boolean);
+      const after = [...it.shifts];
+      const same = before.length === after.length && before.every(b => after.includes(b));
+      if (same) { results[it.id] = { outcome: 'nochange', before, after }; continue; }
+      const nm = existing[0] ? existing[0].name : canonicalName(model, it.name);
+      const tmpl = existing[0] || { d: 30, e: 15 };
+      sh.rows = sh.rows.filter(r => !existing.includes(r));
+      if (!after.length) existing.forEach(r => sh.removed.push({ ...r, status: 'removed' }));
+      after.forEach(s => insertSorted(sh.rows, { name: nm, shift: s, d: tmpl.d, e: tmpl.e, status: before.length ? 'changed' : 'added', prevShift: before[0] || null, isNew: true }));
+      results[it.id] = { outcome: !before.length ? 'added' : !after.length ? 'removed' : 'changed', before, after };
+    } else {
+      const cand = sh.rows.filter(r => sameName(r.name, it.from));
+      const fromRow = cand.find(r => normShift(r.shift) === it.fromShift) || cand[0];
+      const warn = [];
+      let tmpl = { d: 30, e: 15 };
+      if (fromRow) { tmpl = fromRow; sh.rows = sh.rows.filter(r => r !== fromRow); sh.removed.push({ ...fromRow, status: 'removed' }); }
+      else warn.push(it.from + ' was not on the ' + DAYS[it.dayIndex] + ' sheet');
+      const toExisting = sh.rows.filter(r => sameName(r.name, it.to));
+      if (toExisting.some(r => normShift(r.shift) === it.toShift)) {
+        results[it.id] = { outcome: fromRow ? 'removedOnly' : 'nochange', warn }; continue;
+      }
+      if (toExisting.length) {
+        warn.push(it.to + ' was already on at ' + toExisting.map(r => normShift(r.shift)).join(', ') + ' — replaced');
+        sh.rows = sh.rows.filter(r => !toExisting.includes(r));
+      }
+      insertSorted(sh.rows, { name: canonicalName(model, it.to), shift: it.toShift, d: tmpl.d, e: tmpl.e, status: 'swapped', replaces: fromRow ? fromRow.name.trim() : it.from, isNew: true });
+      results[it.id] = { outcome: 'moved', warn };
+    }
+  }
+  return { sheets, results };
+}
+
+if (typeof module !== 'undefined') module.exports = { parseReport, parsePageRows, buildChanges, applyChanges, sameName, normShift, fmtDate, DAYS, parseDMY };
+
+// ===== Build-from-report mode =====
+// Net each person's shifts per date from the crew schedule change report(s)
+function netCrew(crewReps) {
+  const groups = [];
+  const recs = crewReps.flatMap(r => r.records).sort((a, b) => a.ts - b.ts || a.order - b.order);
+  const find = (date, name) => {
+    let g = groups.find(x => x.date === date && sameName(x.name, name));
+    if (!g) { g = { date, name: String(name).trim(), shifts: [], deleted: [], events: [] }; groups.push(g); }
+    return g;
+  };
+  for (const r of recs) {
+    const act = r.action.toLowerCase();
+    const isAdd = act.includes('add'), isDel = act.includes('delete') || act.includes('remove');
+    if (isAdd) {
+      if (!r.curEmp || !r.curShift) continue;
+      const g = find(r.date, r.curEmp);
+      if (!g.shifts.includes(r.curShift)) g.shifts.push(r.curShift);
+      g.events.push(r);
+    } else if (isDel) {
+      if (!r.prevEmp) continue;
+      const g = find(r.date, r.prevEmp);
+      const had = g.shifts.length;
+      g.shifts = g.shifts.filter(s => s !== r.prevShift);
+      if (r.prevShift) g.deleted.push(r.prevShift);
+      g.events.push(r);
+    } else {
+      // Shift Change / edit
+      if (r.prevEmp) { const g = find(r.date, r.prevEmp); g.shifts = g.shifts.filter(s => s !== r.prevShift); g.events.push(r); }
+      if (r.curEmp && r.curShift) { const g = find(r.date, r.curEmp); if (!g.shifts.includes(r.curShift)) g.shifts.push(r.curShift); if (!g.events.includes(r)) g.events.push(r); }
+    }
+  }
+  return groups;
+}
+
+function crewRange(crewReps) {
+  const rs = crewReps.map(r => r.range).filter(Boolean);
+  if (!rs.length) return null;
+  return { from: Math.min(...rs.map(r => r.from)), to: Math.max(...rs.map(r => r.to)) };
+}
+
+function sortRows(rows) {
+  return rows.sort((a, b) => startMins(a.shift) - startMins(b.shift) || endMins(a.shift) - endMins(b.shift) || a.name.localeCompare(b.name));
+}
+function endMins(shift) {
+  const m = String(shift || '').match(/-\s*(\d{1,2}):(\d{2})/);
+  if (!m) return 9999;
+  let e = (+m[1]) * 60 + (+m[2]);
+  if (e <= startMins(shift)) e += 1440;
+  return e;
+}
+
+// Returns { days:[{date, inRange, rows, deleted}], swaps:[...] }
+function buildRoster(crewReps, swapReps) {
+  const range = crewRange(crewReps);
+  const groups = netCrew(crewReps);
+  const dates = [...new Set(groups.map(g => g.date))].sort((a, b) => a - b);
+  const days = dates.map(date => {
+    const gs = groups.filter(g => g.date === date);
+    const rows = [];
+    for (const g of gs) for (const s of g.shifts) rows.push({ name: g.name, shift: s, events: g.events, edited: g.events.length > 1 || g.events.some(e => !/add/i.test(e.action)) });
+    const deleted = gs.filter(g => !g.shifts.length).map(g => ({ name: g.name, shift: g.deleted[g.deleted.length - 1] || '', events: g.events }));
+    return { date, inRange: !range || (date >= range.from && date <= range.to), rows: sortRows(rows), deleted };
+  });
+  // swaps
+  const swaps = [];
+  for (const rep of swapReps) for (const r of rep.records) {
+    const act = r.action.toLowerCase();
+    if (/cancel|declin|reject|withdraw/.test(act)) continue;
+    if (!/reassign|approv|accept/.test(act)) continue;
+    if (!r.curEmp || !r.prevEmp || sameName(r.curEmp, r.prevEmp)) continue;
+    const toShift = r.curShift || r.prevShift;
+    if (swaps.some(s => s.date === r.date && sameName(s.from, r.prevEmp) && sameName(s.to, r.curEmp) && s.toShift === toShift)) continue;
+    swaps.push({ date: r.date, from: r.prevEmp, fromShift: r.prevShift, to: r.curEmp, toShift, approvedBy: r.approvedBy, action: r.action, index: r.index, ts: r.ts, tsText: r.tsText, initBy: r.initBy });
+  }
+  swaps.sort((a, b) => a.date - b.date || a.ts - b.ts);
+  swaps.forEach((s, i) => { s.id = 's' + i; s.on = true; });
+  return { days, swaps, range };
+}
+
+// Apply ticked swaps to the roster. Returns per-day final rows and per-swap outcome
+function finalizeRoster(roster) {
+  const days = roster.days.map(d => ({ ...d, rows: d.rows.map(r => ({ ...r, status: 'same' })), removed: [] }));
+  const results = {};
+  for (const s of roster.swaps) {
+    const day = days.find(d => d.date === s.date);
+    if (!day) { results[s.id] = { outcome: 'noday' }; continue; }
+    if (!s.on) { results[s.id] = { outcome: 'off' }; continue; }
+    const warn = [];
+    const cand = day.rows.filter(r => sameName(r.name, s.from));
+    const fromRow = cand.find(r => r.shift === s.fromShift) || cand[0];
+    const toRows = day.rows.filter(r => sameName(r.name, s.to));
+    if (toRows.some(r => r.shift === s.toShift) && !fromRow) { results[s.id] = { outcome: 'already' }; continue; }
+    if (fromRow) { day.rows = day.rows.filter(r => r !== fromRow); day.removed.push({ ...fromRow, status: 'removed', by: s.to }); }
+    else warn.push(s.from + ' is not on this day in the schedule report, so nobody was taken off');
+    if (toRows.some(r => r.shift === s.toShift)) { results[s.id] = { outcome: 'moved', warn }; continue; }
+    if (toRows.length) warn.push(s.to + ' was also on at ' + toRows.map(r => r.shift).join(', ') + '; both shifts are kept');
+    day.rows.push({ name: String(s.to).trim(), shift: s.toShift, status: 'swapped', replaces: fromRow ? fromRow.name : s.from });
+    sortRows(day.rows);
+    results[s.id] = { outcome: 'moved', warn };
+  }
+  return { days, results };
+}
+
+if (typeof module !== 'undefined') Object.assign(module.exports, { netCrew, buildRoster, finalizeRoster, sortRows });
+
+</script>
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SHEETNAME = ['Monday','Tuesday','Wed','Thurs','Fri','Sat','Sun'];
+const B1 = 30, B2 = 15;
+const reps = { crew: null, swap: null };
+let days = [];
+
+try { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; } catch (e) {}
+
+async function pdfPages(buf) {
+  const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(buf), isEvalSupported: false }).promise;
+  const pages = [];
+  for (let p = 1; p <= pdf.numPages; p++) {
+    const page = await pdf.getPage(p);
+    const vp = page.getViewport({ scale: 1 });
+    const tc = await page.getTextContent();
+    const items = [];
+    for (const it of tc.items) {
+      if (!it.str || !it.str.trim()) continue;
+      const m = pdfjsLib.Util.transform(vp.transform, it.transform);
+      const h = Math.hypot(m[2], m[3]) || it.height || 8;
+      items.push({ str: it.str, x0: m[4], x1: m[4] + (it.width || h * it.str.length * 0.5), yc: m[5] - h * 0.35, h });
+    }
+    pages.push(items);
+  }
+  return pages;
+}
+function setStatus(k, text, cls) { const s = $('st-' + k); s.textContent = text; s.className = 'st' + (cls ? ' ' + cls : ''); $('up-' + k).classList.toggle('done', cls === 'ok'); }
+
+async function addFile(file, slot) {
+  setStatus(slot, 'Reading…');
+  try {
+    if (!window.pdfjsLib) throw new Error('PDF reader didn’t load. Reload the page.');
+    const rep = parseReport(await pdfPages(await file.arrayBuffer()));
+    if (!rep.type || !rep.records.length) throw new Error('This doesn’t look like the right report.');
+    reps[rep.type] = rep;
+    setStatus(rep.type, file.name, 'ok');
+    if (rep.type !== slot && !reps[slot]) setStatus(slot, 'Tap to choose the PDF');
+  } catch (e) { console.error(e); setStatus(slot, (e && e.message) || 'Could not read this file.', 'err'); }
+  update();
+}
+for (const k of ['crew', 'swap']) {
+  $('in-' + k).addEventListener('change', (e) => { const f = e.target.files[0]; if (f) addFile(f, k); e.target.value = ''; });
+  const up = $('up-' + k);
+  up.addEventListener('dragover', (e) => { e.preventDefault(); up.classList.add('drag'); });
+  up.addEventListener('dragleave', () => up.classList.remove('drag'));
+  up.addEventListener('drop', (e) => { e.preventDefault(); up.classList.remove('drag'); const f = e.dataTransfer.files[0]; if (f) addFile(f, k); });
+}
+
+function update() {
+  if (!reps.crew) { days = []; $('dl').disabled = true; return; }
+  const roster = buildRoster([reps.crew], reps.swap ? [reps.swap] : []);
+  const fin = finalizeRoster(roster);
+  days = fin.days.filter(d => d.inRange && d.rows.length);
+  if (!days.length) days = fin.days.filter(d => d.rows.length);
+  $('dl').disabled = !days.length;
+  $('out').innerHTML = days.length ? days.map(d => {
+    const wd = (new Date(d.date).getUTCDay() + 6) % 7;
+    const rows = d.rows.map(r => `<tr class="${r.status === 'swapped' ? 'swp' : ''}"><td>${esc(r.name)}${r.status === 'swapped' ? `<span class="note">swapped in for ${esc(r.replaces)}</span>` : ''}</td><td class="t">${esc(r.shift)}</td><td class="b">${B1}</td><td class="b">${B2}</td></tr>`).join('');
+    return `<section class="day"><div class="day-h"><h2>${DAYS[wd]}</h2><span>${fmtDate(d.date)}</span></div><div class="tw"><table><tbody>${rows}</tbody></table></div></section>`;
+  }).join('') : '<p class="empty">No shifts found in this report.</p>';
+}
+
+function buildWorkbook() {
+  const wb = new ExcelJS.Workbook();
+  const used = new Set();
+  const body = { name: 'Lucida Sans Unicode', size: 14 };
+  for (const d of days) {
+    const wd = (new Date(d.date).getUTCDay() + 6) % 7;
+    let name = SHEETNAME[wd];
+    if (used.has(name)) name = (name + ' ' + fmtDate(d.date).slice(0, 5).replace('/', '-')).slice(0, 31);
+    used.add(name);
+    const ws = wb.addWorksheet(name, {
+      pageSetup: { paperSize: 9, orientation: 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 0, showGridLines: true, margins: { left: 0.7, right: 0.7, top: 0.75, bottom: 0.75, header: 0.3, footer: 0.3 } },
+      views: [{ zoomScale: 70 }],
+    });
+    ws.columns = [{ width: 32 }, { width: 44 }, { width: 25 }, { width: 8.86 }, { width: 5.57 }, { width: 9 }];
+    const h = ws.getRow(1); h.height = 23.25;
+    h.getCell(2).value = DAYS[wd]; h.getCell(2).font = { name: 'Calibri', size: 18, bold: true };
+    h.getCell(3).value = new Date(d.date); h.getCell(3).numFmt = 'mm-dd-yy'; h.getCell(3).font = { name: 'Calibri', size: 16, bold: true };
+    d.rows.forEach((r, i) => {
+      const row = ws.getRow(2 + i); row.height = 18.75;
+      [r.name, r.shift, B1, B2].forEach((v, j) => { const c = row.getCell(2 + j); c.value = v; c.font = body; c.alignment = { horizontal: 'left' }; });
+    });
+  }
+  return wb.xlsx.writeBuffer();
+}
+function setMsg(t, cls) { const m = $('msg'); m.textContent = t; m.className = 'msg' + (cls ? ' ' + cls : ''); }
+$('dl').addEventListener('click', async () => {
+  const btn = $('dl'); btn.disabled = true; setMsg('');
+  try {
+    if (!window.ExcelJS) throw new Error('Spreadsheet writer didn’t load. Reload the page.');
+    const out = await buildWorkbook();
+    const a = fmtDate(days[0].date).replace(/\//g, '-'), z = fmtDate(days[days.length - 1].date).replace(/\//g, '-');
+    const filename = `Breaksheet ${a}${a !== z ? ' to ' + z : ''}.xlsx`;
+    const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const a2 = document.createElement('a'); a2.href = url; a2.download = filename;
+    document.body.appendChild(a2); a2.click(); a2.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    setMsg('Downloaded ' + filename);
+  } catch (e) {
+    console.error(e);
+    if (e && e.code === 'declined') setMsg('Download cancelled.');
+    else setMsg((e && e.message) || 'Download failed.', 'err');
+  } finally { btn.disabled = !days.length; }
+});
+</script>
+
+</body>
+</html>
