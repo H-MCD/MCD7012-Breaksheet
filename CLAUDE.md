@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.14.2** (shown at the bottom of the left clipboard).
+- Current version: **V2.14.3** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -28,7 +28,8 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 6. **No McDonald's logos, golden arches or brand artwork** — colours only.
 7. **Print must look exactly like the Excel template and the physical sheet** (see "Print" below).
 8. Show mockups/screenshots **before** building visual changes; owner rejects a lot, so ask first.
-9. Owner declined deleting old unused code ("don't take any risks") — leave it in place.
+9. Unused code was cleaned out at the owner's request in V2.14.3 (old ☰ menu, old day tabs, page-curl
+   animation, old swap table, unused styles). Check that screens, Excel and print stay identical when removing more.
 10. Use plain, non-technical language with the owner.
 
 ## How `index.html` is built (important)
@@ -57,7 +58,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.hiStyle.mgr`, `bs7012.hiStyle.end`
   (legacy `bs7012.hiStyle`). (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.14.2)
+## Current features (V2.14.3)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, **Download breaksheet**
   button + small **printer icon** button, warnings ("Check before downloading"), version line.
@@ -65,9 +66,9 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   bottom when few names). Phones: flowing sheet instead of A4.
 - **Sticky index flags** on the right edge pick the day; only the selected flag sits on the page.
 - **Switching days** is instant: ←/→ keys; swipe on phones. (The paper-curl page turn was
-  **switched off by the owner in V2.14.2** — `const still = true` in `turnTo`; curl code left in place.)
+  **switched off by the owner in V2.14.2**; its code was removed in V2.14.3.)
 - **Settings on the back of the left clipboard**: folded **SETTINGS** corner flips it; **BACK** corner
-  or Esc flips back; `#managers` URL opens it. (The old ☰ menu/index card is hidden, still in code.)
+  or Esc flips back; `#managers` URL opens it.
 - Mouse pointer: slim **blue biro** (up-left like an arrow) on desktop; normal hand over clickables;
   text cursor in inputs; phones unchanged.
 - Colours: warm wood only. (A Colours choice — Warm wood / Office grey / Ketchup & mustard — was
@@ -120,7 +121,7 @@ separately for manager names and early finish times (Darker = Segoe UI Semibold 
 - Shift count in the crew summary (removed). Colour swatch icons (removed).
 - Big pen cursor, dot cursor, pen with click sparks; realistic chrome clip; folder tabs; ☰ menu;
   on-screen PIN keypad (PIN is typed into four rings); right-panel placeholder before upload.
-- Print-which-days picker (#8) — not wanted for now. Deleting unused old code — not wanted.
+- Print-which-days picker (#8) — not wanted for now.
 
 ## Open / suggested next (owner hasn't chosen)
 - Swap summary says "1 cancelled" for a cancelled *drop* — offered rewording ("cancelled request").
@@ -134,6 +135,8 @@ separately for manager names and early finish times (Darker = Segoe UI Semibold 
   `cdnjs…pdf.min.js / pdf.worker.min.js / exceljs.min.js` to those files; stub `script.google.com`.
 - Load `file:///…/index.html`, feed data via `reps.crew = {type, store, range:{from,to}, records:[…]}`
   then `update()`, or upload real PDFs with `setInputFiles('#in-crew'| '#in-swap')`.
+- Full before/after check: scratchpad `mock/snap.js <html> <dir>` + `mock/cmp.py A B` (screens, Excel, print)
+  — recreate if the scratchpad is gone.
 - Regression: build the workbook with `buildWorkbook()` + ExcelJS and compare every cell/font/width
   with the same data on `git show origin/main:index.html` → must be **identical**.
 - Print: `preparePrint()` then `page.pdf({preferCSSPageSize:true})`; check page count, and line
@@ -148,4 +151,4 @@ V1.4 → V1.6.4 original · V1.7.0 clipboard redesign (A4 sheet, sticky flags, p
 light only) · 1.7.1 rename + store 7079 · 1.8.0 biro pointer · 1.9.0–1.9.2 cross out / add someone ·
 1.10.0–1.10.1 print + template match + even lines · 1.11.0 change times · 1.11.1 Carlito header ·
 V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid + darker border ·
-2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off.
+2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical).
