@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.14.0** (shown at the bottom of the left clipboard).
+- Current version: **V2.14.1** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -21,7 +21,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 3. **Work on the branch, show the owner, push to `main` only when they say "push".** Always ask
    "Shall I push it to main?" after a change. Push = fast-forward `main` to the working branch.
 4. **Light look only.** No dark mode, no dark desk backgrounds (dark mode was removed in V1.7.0;
-   dark colour options were removed in V2.14.0). The right-hand clipboard is black — owner has not
+   the Colours setting was removed again in V2.14.1). The right-hand clipboard is black — owner has not
    said to change it (it was asked about; no answer yet).
 5. **Don't rely on animations.** Most staff devices have "reduce motion" on. Every state must look
    right with no animation; animation is only a bonus (`prefers-reduced-motion` respected everywhere).
@@ -55,9 +55,9 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   Properties `MANAGER_PIN`; 5 wrong tries → 15-minute lock). Owner has installed it.
 - Everything else is client-side. Per-browser settings in `localStorage`:
   `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.hiStyle.mgr`, `bs7012.hiStyle.end`
-  (legacy `bs7012.hiStyle`), `bs7012.look`.
+  (legacy `bs7012.hiStyle`). (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.14.0)
+## Current features (V2.14.1)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, **Download breaksheet**
   button + small **printer icon** button, warnings ("Check before downloading"), version line.
@@ -69,9 +69,8 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   or Esc flips back; `#managers` URL opens it. (The old ☰ menu/index card is hidden, still in code.)
 - Mouse pointer: slim **blue biro** (up-left like an arrow) on desktop; normal hand over clickables;
   text cursor in inputs; phones unchanged.
-- **Colours** (Settings): **Warm wood** (default), **Office grey**, **Ketchup & mustard** (steel
-  counter, soft red board, mustard button, condiment flag colours). Names only, no swatches.
-  Implemented as `html[data-look="wood|grey|kitchen"]` CSS. Print/Excel always black & white.
+- Colours: warm wood only. (A Colours choice — Warm wood / Office grey / Ketchup & mustard — was
+  added in V2.14.0 and **reverted by the owner in V2.14.1**; don't bring it back unless asked.)
 - Heading font Fraunces; handwriting Kalam (notes, flags); blue pen colour `#1F3FBF`; rust `#C2410C`.
 
 **Reading reports**
@@ -112,6 +111,7 @@ separately for manager names and early finish times (Darker = Segoe UI Semibold 
   explained and the owner said leave it.
 
 ## Decisions — rejected or undone (don't re-propose as-is)
+- Colours setting in Settings (V2.14.0, reverted in V2.14.1).
 - Dark mode; dark desk colours (Green desk mat, Night shift); bright red Ketchup variant.
 - Themed name-suggestion card (V1.9.3, reverted) — keep the browser's own list.
 - Upload boxes as paper slips / envelope / label-maker tape / RECEIVED stamp / kitchen ticket rail /
@@ -147,4 +147,4 @@ V1.4 → V1.6.4 original · V1.7.0 clipboard redesign (A4 sheet, sticky flags, p
 light only) · 1.7.1 rename + store 7079 · 1.8.0 biro pointer · 1.9.0–1.9.2 cross out / add someone ·
 1.10.0–1.10.1 print + template match + even lines · 1.11.0 change times · 1.11.1 Carlito header ·
 V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid + darker border ·
-2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings.
+2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number).
