@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.14.1** (shown at the bottom of the left clipboard).
+- Current version: **V2.14.2** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -57,14 +57,15 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.hiStyle.mgr`, `bs7012.hiStyle.end`
   (legacy `bs7012.hiStyle`). (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.14.1)
+## Current features (V2.14.2)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, **Download breaksheet**
   button + small **printer icon** button, warnings ("Check before downloading"), version line.
 - Right: black clipboard holding the day's breaksheet as a true **A4 page** (shrinks to fit; blank
   bottom when few names). Phones: flowing sheet instead of A4.
 - **Sticky index flags** on the right edge pick the day; only the selected flag sits on the page.
-- **Page turn**: paper curls (strip-based 3D) when switching days; ←/→ keys; swipe on phones.
+- **Switching days** is instant: ←/→ keys; swipe on phones. (The paper-curl page turn was
+  **switched off by the owner in V2.14.2** — `const still = true` in `turnTo`; curl code left in place.)
 - **Settings on the back of the left clipboard**: folded **SETTINGS** corner flips it; **BACK** corner
   or Esc flips back; `#managers` URL opens it. (The old ☰ menu/index card is hidden, still in code.)
 - Mouse pointer: slim **blue biro** (up-left like an arrow) on desktop; normal hand over clickables;
@@ -111,7 +112,7 @@ separately for manager names and early finish times (Darker = Segoe UI Semibold 
   explained and the owner said leave it.
 
 ## Decisions — rejected or undone (don't re-propose as-is)
-- Colours setting in Settings (V2.14.0, reverted in V2.14.1).
+- Colours setting in Settings (V2.14.0, reverted in V2.14.1). Paper-curl page turn (off in V2.14.2).
 - Dark mode; dark desk colours (Green desk mat, Night shift); bright red Ketchup variant.
 - Themed name-suggestion card (V1.9.3, reverted) — keep the browser's own list.
 - Upload boxes as paper slips / envelope / label-maker tape / RECEIVED stamp / kitchen ticket rail /
@@ -138,7 +139,7 @@ separately for manager names and early finish times (Darker = Segoe UI Semibold 
 - Print: `preparePrint()` then `page.pdf({preferCSSPageSize:true})`; check page count, and line
   thickness with `pdftoppm -r 600/300 -aa no -aaVector no` (all lines equal).
 - Also check: phone (iPhone 13) has no sideways scroll; reduced-motion; PIN dialog; Settings flip;
-  page turn; add / cross out / change time; no page errors.
+  day switching; add / cross out / change time; no page errors.
 - LibreOffice (`soffice --headless --convert-to pdf`) can print the Excel template for comparison.
 - Note: names are normalised without digits ("P1" == "P2") — use letter names in test data.
 
@@ -147,4 +148,4 @@ V1.4 → V1.6.4 original · V1.7.0 clipboard redesign (A4 sheet, sticky flags, p
 light only) · 1.7.1 rename + store 7079 · 1.8.0 biro pointer · 1.9.0–1.9.2 cross out / add someone ·
 1.10.0–1.10.1 print + template match + even lines · 1.11.0 change times · 1.11.1 Carlito header ·
 V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid + darker border ·
-2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number).
+2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off.
