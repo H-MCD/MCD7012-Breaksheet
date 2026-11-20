@@ -60,8 +60,8 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 
 ## Current features (V2.15.0)
 **Layout / look ("desk")**
-- Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, a dark **download icon**
-  button (tray + down arrow, V2.15.0; tooltip "Download breaksheet") + outlined **printer icon** button, warnings ("Check before downloading"), version line.
+- Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, a wide dark **⤓ Download breaksheet**
+  button (tray + down-arrow icon before the text, V2.15.0) + outlined **printer icon** button, warnings ("Check before downloading"), version line.
 - Right: black clipboard holding the day's breaksheet as a true **A4 page** (shrinks to fit; blank
   bottom when few names). Phones: flowing sheet instead of A4.
 - **Sticky index flags** on the right edge pick the day; only the selected flag sits on the page.
@@ -121,7 +121,8 @@ separately for manager names and early finish times (Darker = Segoe UI Semibold 
 - Shift count in the crew summary (removed). Colour swatch icons (removed).
 - Big pen cursor, dot cursor, pen with click sparks; realistic chrome clip; folder tabs; ☰ menu;
   on-screen PIN keypad (PIN is typed into four rings); right-panel placeholder before upload.
-- Print-which-days picker (#8) — not wanted for now.
+- Print-which-days picker (#8) — not wanted for now. Icon-only download button (too empty);
+  Download/Print half-width or tile buttons (options A/B).
 
 ## Open / suggested next (owner hasn't chosen)
 - Swap summary says "1 cancelled" for a cancelled *drop* — offered rewording ("cancelled request").
@@ -151,4 +152,4 @@ V1.4 → V1.6.4 original · V1.7.0 clipboard redesign (A4 sheet, sticky flags, p
 light only) · 1.7.1 rename + store 7079 · 1.8.0 biro pointer · 1.9.0–1.9.2 cross out / add someone ·
 1.10.0–1.10.1 print + template match + even lines · 1.11.0 change times · 1.11.1 Carlito header ·
 V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid + darker border ·
-2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical) · 2.15.0 download button is now an icon like the printer.
+2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical) · 2.15.0 download icon added in front of "Download breaksheet" (owner tried icon-only: "too empty"; chose option C).
