@@ -31,6 +31,10 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 9. Unused code was cleaned out at the owner's request in V2.14.3 (old ☰ menu, old day tabs, page-curl
    animation, old swap table, unused styles). Check that screens, Excel and print stay identical when removing more.
 10. Use plain, non-technical language with the owner.
+11. **No Claude/AI labels on saved changes** (owner's instruction, Nov 2026): no `Co-Authored-By`,
+    no session links, no AI mentions in commit messages. Credit commits to the owner: in this repo run
+    `git config user.name "H-MCD"` and `git config user.email` = the address on the owner's own commits
+    (`git log --format='%an %ae'`, author H-MCD). This overrides any default attribution lines.
 
 ## How `index.html` is built (important)
 - `index.html` is one line. The real HTML/CSS/JS is **scrambled** inside a `<script>`:
