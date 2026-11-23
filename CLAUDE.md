@@ -93,7 +93,8 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - **Closing check** (V2.19.0): yellow sticky note on the left clipboard, **only while Who's in is open** and **only
   when the selected day is NOT covered** (owner: no note when covered). Covered = at least **1 finishing at 00:00 +
   1 at 00:30**, or **2+ finishing at 00:30** (exact finish times). Shows ✗ Not covered, names at 00:00 / 00:30,
-  what's needed, and "Also not covered: …" for other failing days. Follows edits.
+  what's needed, and "Also not covered: …" for other failing days. Follows edits. **Phones:** the note shows at the top of the
+  Who's in page (`.closing-ph`) instead of the left clipboard, so no scrolling.
 - **Switching days** is instant: ←/→ keys; swipe on phones. (The paper-curl page turn was
   **switched off by the owner in V2.14.2**; its code was removed in V2.14.3.)
 - **Settings on the back of the left clipboard**: folded **SETTINGS** corner flips it; **BACK** corner
