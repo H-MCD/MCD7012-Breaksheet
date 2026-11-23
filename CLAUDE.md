@@ -90,7 +90,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   and include the **night before's overnight crew** until they finish (phones: no bar chart, cards + list only) (first day of a report: noted as unknown).
   Owner rejected: plain table/list versions ("2007"), crew timeline / staffing clock / week heatmap ("too complicated").
   Open: Day end 19:00 assumed (owner said 6, 7 or 8 pm); on-screen only assumed.
-- **"Heads up" note** (V2.20.0) adds an **evening check**: any moment from **19:00 up to (not incl.) 22:30** with
+- **"Heads up" note** (V2.20.0) adds an **evening check**: any moment from **19:00 up to (not incl.) 23:00** (owner moved it from 22:30) with
   **8 or fewer** people in → "✗ Evening short · 21:30–22:30 only 8 in" (`eveningFor`). Same note as the closing check;
   "Also check: Mon 16 (evening) · …" lists other days.
 - **Closing check** (V2.19.0): yellow sticky note on the left clipboard, **only while Who's in is open** and **only
@@ -199,4 +199,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical) · 2.15.0 download icon added in front of "Download breaksheet" (owner tried icon-only: "too empty"; chose option C) · 2.15.1 print fix: long days / circles no longer print grid lines through the names · 2.16.0 flags outside the clipboard + people count · 2.16.1 Settings switches update the sheet instantly · 2.17.0 Bold/Darker highlight style removed (always bold) · 2.17.1 cross-out line visible with animations off · 2.18.1 "Who's in" staffing view, hidden behind a tucked gold flag + its own PIN (owner chose the number;
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
-names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–22:30).
+names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00).
