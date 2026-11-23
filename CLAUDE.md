@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.20.3** (shown at the bottom of the left clipboard).
+- Current version: **V2.20.4** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -61,7 +61,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Everything else is client-side. Per-browser settings in `localStorage`:
   `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`. (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.20.3)
+## Current features (V2.20.4)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, a wide dark **⤓ Download breaksheet**
   button (tray + down-arrow icon before the text, V2.15.0) + outlined **printer icon** button, warnings ("Check before downloading"), version line.
@@ -76,7 +76,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   leaves room for the flags) and show the **number of people in brackets**, e.g. `Sat 14 (50)` (screen only).
   Phones: flags stay inside the board, three lines (day / date / (count)).
 - **"Who's in" staffing view** (V2.18.0, screen only — never printed, not in Excel). **Hidden:** a **glowing gold**
-  flag (no border, soft shine) sits **tucked** behind the sheet above the day flags (no writing, can't be clicked)
+  flag (no border, soft shine) sits **tucked** behind the sheet above the day flags (only a **"?"** on it — V2.20.4 —, can't be clicked)
   so people wonder what it is. **Tap the left clipboard's logo once → PIN box → the Who's in PIN** (a separate
   4-digit PIN chosen by the owner — NOT the manager PIN; stored only as a scrambled check value `WHO_PIN_HASH`,
   never write the digits in the repo; ask the owner if needed) → flag comes out. 5 wrong tries → 15-min lock
@@ -208,4 +208,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical) · 2.15.0 download icon added in front of "Download breaksheet" (owner tried icon-only: "too empty"; chose option C) · 2.15.1 print fix: long days / circles no longer print grid lines through the names · 2.16.0 flags outside the clipboard + people count · 2.16.1 Settings switches update the sheet instantly · 2.17.0 Bold/Darker highlight style removed (always bold) · 2.17.1 cross-out line visible with animations off · 2.18.1 "Who's in" staffing view, hidden behind a tucked gold flag + its own PIN (owner chose the number;
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
-names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell.
+names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell · 2.20.4 "?" on the tucked gold flag.
