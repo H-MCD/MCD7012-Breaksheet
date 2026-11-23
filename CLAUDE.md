@@ -84,7 +84,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   ↑ start / ↓ go home badges (= sums of that shift's list, boundary times count in both shifts). Tapping a card
   highlights it in an hourly bar chart (bars = people in on the hour; −/+ under a bar = changes since the hour
   before) and lists **exact-time** changes ("21:00 ↓ 5 go home · 22 in", **every** first name — no "+4"). Counts follow sheet edits
-  and include the **night before's overnight crew** until they finish (first day of a report: noted as unknown).
+  and include the **night before's overnight crew** until they finish (phones: no bar chart, cards + list only) (first day of a report: noted as unknown).
   Owner rejected: plain table/list versions ("2007"), crew timeline / staffing clock / week heatmap ("too complicated").
   Open: Day end 19:00 assumed (owner said 6, 7 or 8 pm); on-screen only assumed.
 - **Switching days** is instant: ←/→ keys; swipe on phones. (The paper-curl page turn was
