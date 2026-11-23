@@ -59,7 +59,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Add/remove need a **4-digit PIN** checked server-side: `apps-script/pin-check.gs` (PIN in Script
   Properties `MANAGER_PIN`; 5 wrong tries → 15-minute lock). Owner has installed it.
 - Everything else is client-side. Per-browser settings in `localStorage`:
-  `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`. (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
+  `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`. (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
 ## Current features (V2.18.0)
 **Layout / look ("desk")**
@@ -73,10 +73,10 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   Phones: flags stay inside the board, three lines (day / date / (count)).
 - **"Who's in" staffing view** (V2.18.0, screen only — never printed, not in Excel). **Hidden:** a **glowing gold**
   flag (no border, soft shine) sits **tucked** behind the sheet above the day flags (no writing, can't be clicked)
-  so people wonder what it is. **Tap the left clipboard's logo once → PIN box → manager PIN** (checked by Google,
-  `action=check` in `apps-script/pin-check.gs`, same 5-try lock) → flag comes out. Tap the logo again to tuck it
-  back; a reload tucks it back in. If the Google script lacks `check` (no `checked:true` in the answer) it
-  refuses to unlock. Rejected flag looks: 4-tap unlock, sliver-only white tab, turn-the-sheet-over, holographic,
+  so people wonder what it is. **Tap the left clipboard's logo once → PIN box → the Who's in PIN** (a separate
+  4-digit PIN chosen by the owner — NOT the manager PIN; stored only as a scrambled check value `WHO_PIN_HASH`,
+  never write the digits in the repo; ask the owner if needed) → flag comes out. 5 wrong tries → 15-min lock
+  (`bs7012.whoLock`). Tap the logo again to tuck it back; a reload tucks it back in. Google is not involved. Rejected flag looks: 4-tap unlock, sliver-only white tab, turn-the-sheet-over, holographic,
   neon green, silver, platinum, bordered gold. Pulled-out flag toggles the view; day flags / arrows pick the day. Four shift cards — Morning 05–11, Day 11–19,
   Evening 19–23, Overnight 23–07 (`WHO_WIN`) — each with *most at once* (true max at exact times) and
   ↑ start / ↓ go home badges (= sums of that shift's list, boundary times count in both shifts). Tapping a card

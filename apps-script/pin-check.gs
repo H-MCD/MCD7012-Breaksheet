@@ -1,5 +1,5 @@
 /**
- * PIN check for the manager list (add / remove) and the hidden "Who's in" view (check).
+ * PIN check for the manager list (add / remove).
  *
  * The breaksheet page sends the PIN as `pin` with every add or remove.
  * This check is what actually protects the list: without it, anyone with the
@@ -19,10 +19,6 @@
  *  4. Deploy > Manage deployments > edit (pencil) > Version: New version > Deploy.
  *     Editing the existing deployment keeps the same URL, so the page keeps working.
  *
- * The page can also ask "is this PIN right?" with action=check (used to unlock the hidden
- * "Who's in" view). It changes nothing; a right PIN answers { ok: true, checked: true }.
- * Wrong PINs here count towards the same lock.
- *
  * Listing managers needs no PIN. After 5 wrong PINs in a row, changes are
  * locked for everyone for 15 minutes, so the PIN can't be guessed quickly.
  * To change the PIN later, just edit MANAGER_PIN in Script Properties.
@@ -32,7 +28,7 @@ const PIN_LOCK_MINUTES = 15;
 
 function checkManagerPin_(e) {
   const action = String((e && e.parameter && e.parameter.action) || 'list');
-  if (action !== 'add' && action !== 'remove' && action !== 'check') return null;
+  if (action !== 'add' && action !== 'remove') return null;
 
   const props = PropertiesService.getScriptProperties();
   const pin = props.getProperty('MANAGER_PIN');
@@ -47,7 +43,6 @@ function checkManagerPin_(e) {
 
     if (String(e.parameter.pin || '') === String(pin)) {
       props.deleteProperty('PIN_FAILS');
-      if (action === 'check') return { ok: true, checked: true, managers: [] }; // just checking: answer yes
       return null; // PIN is right: let the add/remove go ahead
     }
 
