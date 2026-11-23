@@ -71,8 +71,11 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   **stick out past the black clipboard** (board is standard width: 26px padding both sides, `margin-right:94px`
   leaves room for the flags) and show the **number of people in brackets**, e.g. `Sat 14 (50)` (screen only).
   Phones: flags stay inside the board, three lines (day / date / (count)).
-- **"Who's in" staffing view** (V2.18.0, screen only — never printed, not in Excel): white **Who's in** flag above
-  the day flags toggles it; day flags / arrows pick the day. Four shift cards — Morning 05–11, Day 11–19,
+- **"Who's in" staffing view** (V2.18.0, screen only — never printed, not in Excel). **Hidden:** a bright flag sits
+  **tucked** behind the sheet above the day flags (no writing, can't be clicked) so people wonder what it is;
+  **4 quick taps on the left clipboard's logo** pull it out (label "Who's in"), 4 more tuck it back; a reload tucks
+  it back in (not remembered). Colour being chosen: holographic built; owner now choosing neon green (no border)
+  vs metallic gold. Pulled-out flag toggles the view; day flags / arrows pick the day. Four shift cards — Morning 05–11, Day 11–19,
   Evening 19–23, Overnight 23–07 (`WHO_WIN`) — each with *most at once* (true max at exact times) and
   ↑ start / ↓ go home badges (= sums of that shift's list, boundary times count in both shifts). Tapping a card
   highlights it in an hourly bar chart (bars = people in on the hour; −/+ under a bar = changes since the hour
