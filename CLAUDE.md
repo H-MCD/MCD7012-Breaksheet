@@ -80,7 +80,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   never write the digits in the repo; ask the owner if needed) → flag comes out. 5 wrong tries → 15-min lock
   (`bs7012.whoLock`). Tap the logo again to tuck it back; a reload tucks it back in. Google is not involved. Rejected flag looks: 4-tap unlock, sliver-only white tab, turn-the-sheet-over, holographic,
   neon green, silver, platinum, bordered gold. Pulled-out flag toggles the view; day flags / arrows pick the day. Four shift cards — Morning 05–11, Day 11–19,
-  Evening 19–23, Overnight 23–07 (`WHO_WIN`) — each with *most at once* (true max at exact times) and
+  Evening 19–23:30 (owner: 23:00–23:30 belongs to evenings too), Overnight 23–07 (`WHO_WIN`) — each with *most at once* (true max at exact times) and
   ↑ start / ↓ go home badges (= sums of that shift's list, boundary times count in both shifts). Tapping a card
   highlights it in an hourly bar chart (bars = people in on the hour; −/+ under a bar = changes since the hour
   before) and lists **exact-time** changes ("21:00 ↓ 5 go home · 22 in", **every** first name — no "+4"). Counts follow sheet edits
