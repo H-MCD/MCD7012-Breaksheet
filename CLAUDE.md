@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.18.0** (shown at the bottom of the left clipboard).
+- Current version: **V2.18.1** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -61,7 +61,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Everything else is client-side. Per-browser settings in `localStorage`:
   `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`. (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.18.0)
+## Current features (V2.18.1)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, a wide dark **⤓ Download breaksheet**
   button (tray + down-arrow icon before the text, V2.15.0) + outlined **printer icon** button, warnings ("Check before downloading"), version line.
@@ -182,5 +182,5 @@ V1.4 → V1.6.4 original · V1.7.0 clipboard redesign (A4 sheet, sticky flags, p
 light only) · 1.7.1 rename + store 7079 · 1.8.0 biro pointer · 1.9.0–1.9.2 cross out / add someone ·
 1.10.0–1.10.1 print + template match + even lines · 1.11.0 change times · 1.11.1 Carlito header ·
 V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid + darker border ·
-2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical) · 2.15.0 download icon added in front of "Download breaksheet" (owner tried icon-only: "too empty"; chose option C) · 2.15.1 print fix: long days / circles no longer print grid lines through the names · 2.16.0 flags outside the clipboard + people count · 2.16.1 Settings switches update the sheet instantly · 2.17.0 Bold/Darker highlight style removed (always bold) · 2.17.1 cross-out line visible with animations off · 2.18.0 "Who's in" staffing view (number 2.18.0 was
-first used for the hover-only Settings corner, which was never released).
+2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical) · 2.15.0 download icon added in front of "Download breaksheet" (owner tried icon-only: "too empty"; chose option C) · 2.15.1 print fix: long days / circles no longer print grid lines through the names · 2.16.0 flags outside the clipboard + people count · 2.16.1 Settings switches update the sheet instantly · 2.17.0 Bold/Darker highlight style removed (always bold) · 2.17.1 cross-out line visible with animations off · 2.18.1 "Who's in" staffing view, hidden behind a tucked gold flag + its own PIN (owner chose the number;
+2.18.0 was used on the branch for the never-released hover-only Settings corner).
