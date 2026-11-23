@@ -90,9 +90,10 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   and include the **night before's overnight crew** until they finish (phones: no bar chart, cards + list only) (first day of a report: noted as unknown).
   Owner rejected: plain table/list versions ("2007"), crew timeline / staffing clock / week heatmap ("too complicated").
   Open: Day end 19:00 assumed (owner said 6, 7 or 8 pm); on-screen only assumed.
-- **Closing check** (V2.19.0): yellow sticky note on the left clipboard, **only while Who's in is open**, for the
-  selected day. Covered = at least **1 finishing at 00:00 + 1 at 00:30**, or **2+ finishing at 00:30**. Shows names
-  for each, ✓ Covered / ✗ Not covered + what's needed, and "Also check: …" for other days that fail. Follows edits.
+- **Closing check** (V2.19.0): yellow sticky note on the left clipboard, **only while Who's in is open** and **only
+  when the selected day is NOT covered** (owner: no note when covered). Covered = at least **1 finishing at 00:00 +
+  1 at 00:30**, or **2+ finishing at 00:30** (exact finish times). Shows ✗ Not covered, names at 00:00 / 00:30,
+  what's needed, and "Also not covered: …" for other failing days. Follows edits.
 - **Switching days** is instant: ←/→ keys; swipe on phones. (The paper-curl page turn was
   **switched off by the owner in V2.14.2**; its code was removed in V2.14.3.)
 - **Settings on the back of the left clipboard**: folded **SETTINGS** corner flips it; **BACK** corner
