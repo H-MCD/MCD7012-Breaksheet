@@ -69,6 +69,8 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   bottom when few names). Phones: flowing sheet instead of A4, and (V2.18.1) only **name + time** columns — the
   left note column and the 30 / 15 columns are hidden on phones (notes show under the name; a slim end slot keeps
   the ✗). Screen only: computer view, print and Excel unchanged.
+  Phones only: once a report is loaded the **black clipboard moves to the top** (`#view-main.loaded`), and tapping
+  its **metal clip** does the same as tapping the logo (Who's in PIN / tuck back). Computers unchanged.
 - **Sticky index flags** pick the day; only the selected flag sits on the page. Since V2.16.0 the flags
   **stick out past the black clipboard** (board is standard width: 26px padding both sides, `margin-right:94px`
   leaves room for the flags) and show the **number of people in brackets**, e.g. `Sat 14 (50)` (screen only).
