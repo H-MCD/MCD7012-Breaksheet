@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.20.2** (shown at the bottom of the left clipboard).
+- Current version: **V2.20.3** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -61,7 +61,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Everything else is client-side. Per-browser settings in `localStorage`:
   `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`. (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.20.2)
+## Current features (V2.20.3)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, a wide dark **⤓ Download breaksheet**
   button (tray + down-arrow icon before the text, V2.15.0) + outlined **printer icon** button, warnings ("Check before downloading"), version line.
@@ -127,6 +127,9 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - **Cross out** a row: blue pen ✗ at row end (tap row first on phones) → pen strike-through (animations on:
   line draws across in 0.4 s; animations off: full line shows instantly for 0.65 s, then the row goes — V2.17.1); yellow
   sticky "undo ↶" note; "Crossed out" sticky note on the left with "put back".
+  **V2.20.3 iPhone fix:** the ✗ and the strike line are positioned inside the row's **last cell**
+  (`td.b:last-child{position:relative}`), never against the `<tr>` — older iPhone Safari can't position against
+  table rows, so every ✗ stacked mid-sheet and crossed out a random person. Don't move them back onto `tr`.
 - **Add someone**: tap/click the page → handwritten "+ add someone" appears for 6 s (NOT on hover);
   name (browser's own suggestion list from report names) + shift (`16:00-23:00`, `1600-2300`,
   `16-23`, `6.30-14.30`, `9 to 17`, `23-7`). Slots in by start time.
@@ -205,4 +208,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical) · 2.15.0 download icon added in front of "Download breaksheet" (owner tried icon-only: "too empty"; chose option C) · 2.15.1 print fix: long days / circles no longer print grid lines through the names · 2.16.0 flags outside the clipboard + people count · 2.16.1 Settings switches update the sheet instantly · 2.17.0 Bold/Darker highlight style removed (always bold) · 2.17.1 cross-out line visible with animations off · 2.18.1 "Who's in" staffing view, hidden behind a tucked gold flag + its own PIN (owner chose the number;
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
-names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card.
+names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell.
