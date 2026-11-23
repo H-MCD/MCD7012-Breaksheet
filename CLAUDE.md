@@ -92,7 +92,9 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   Open: Day end 19:00 assumed (owner said 6, 7 or 8 pm); on-screen only assumed.
 - **"Heads up" note** (V2.20.0) adds an **evening check**: any moment from **19:00 up to (not incl.) 23:00** (owner moved it from 22:30) with
   **8 or fewer** people in → "✗ Evening short · 21:30–22:30 only 8 in" (`eveningFor`). Same note as the closing check;
-  "Also check: Mon 16 (evening) · …" lists other days.
+  **Whole week:** the note shows on **every** selected day if **any** day in the report has a problem (owner's
+  request) — title "Heads up · this week", one block per problem day (viewed day first, marked "(this day)"),
+  day names are links that jump to that day. No note only when the whole week is fine.
 - **Closing check** (V2.19.0): yellow sticky note on the left clipboard, **only while Who's in is open** and **only
   when the selected day is NOT covered** (owner: no note when covered). Covered = at least **1 finishing at 00:00 +
   1 at 00:30**, or **2+ finishing at 00:30** (exact finish times). Shows ✗ Not covered, names at 00:00 / 00:30,
