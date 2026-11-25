@@ -63,8 +63,9 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 
 ## Current features (V2.22.0)
 **Layout / look ("desk")**
-- Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, then **two big half-width blocks**: dark
-  **download icon** + outlined **printer icon** (icons only, V2.22.0 — owner asked; tooltip "Download breaksheet"), warnings ("Check before downloading"), version line.
+- Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, then **two big half-width brown buttons**
+  (raised: top shine, dark bottom edge, sink while pressed — no animation) with a cream **download icon** and
+  **printer icon** (icons only, V2.22.0 — owner asked; tooltip "Download breaksheet"), warnings ("Check before downloading"), version line.
 - Right: black clipboard holding the day's breaksheet as a true **A4 page** (shrinks to fit; blank
   bottom when few names). Phones: flowing sheet instead of A4, and (V2.18.1) only **name + time** columns — the
   left note column and the 30 / 15 columns are hidden on phones (notes show under the name; a slim end slot keeps
@@ -213,4 +214,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.13.0 PDF file name + different-week warning · 2.14.0 Colours in Settings · 2.14.1 Colours setting reverted (page = 2.13.0 + version number) · 2.14.2 page-turn animation off · 2.14.3 unused code removed (page 156 KB → 134 KB, everything else identical) · 2.15.0 download icon added in front of "Download breaksheet" (owner tried icon-only: "too empty"; chose option C) · 2.15.1 print fix: long days / circles no longer print grid lines through the names · 2.16.0 flags outside the clipboard + people count · 2.16.1 Settings switches update the sheet instantly · 2.17.0 Bold/Darker highlight style removed (always bold) · 2.17.1 cross-out line visible with animations off · 2.18.1 "Who's in" staffing view, hidden behind a tucked gold flag + its own PIN (owner chose the number;
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
-names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell · 2.20.4 "?" on the tucked gold flag · 2.20.5 Fri/Sat short-staff limit 9 or fewer · 2.21.0 change a name on the sheet · 2.21.1 name box offers report names · 2.22.0 Download / Print as two big icon-only blocks (owner's request).
+names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell · 2.20.4 "?" on the tucked gold flag · 2.20.5 Fri/Sat short-staff limit 9 or fewer · 2.21.0 change a name on the sheet · 2.21.1 name box offers report names · 2.22.0 Download / Print as two big brown icon-only buttons (owner's request; tan / cream options declined).
