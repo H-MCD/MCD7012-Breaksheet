@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.22.0** (shown at the bottom of the left clipboard).
+- Current version: **V2.22.1** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -61,7 +61,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Everything else is client-side. Per-browser settings in `localStorage`:
   `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`. (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.22.0)
+## Current features (V2.22.1)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, then **two big half-width brown buttons**
   (raised: top shine, dark bottom edge, sink while pressed — no animation) with **embossed / stamped** gold-cream
@@ -78,7 +78,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   leaves room for the flags) and show the **number of people in brackets**, e.g. `Sat 14 (50)` (screen only).
   Phones: flags stay inside the board, three lines (day / date / (count)).
 - **"Who's in" staffing view** (V2.18.0, screen only — never printed, not in Excel). **Hidden:** a **glowing gold**
-  flag (no border, soft shine) sits **tucked** behind the sheet above the day flags (only a **"?"** on it — V2.20.4 —, can't be clicked)
+  flag (no border, soft shine) sits **tucked** behind the sheet above the day flags (only a **"?"** on it — V2.20.4; tapping it while tucked shows a yellow "Access restricted 🚫" note — V2.22.1)
   so people wonder what it is. **Tap the left clipboard's logo once → PIN box → the Who's in PIN** (a separate
   4-digit PIN chosen by the owner — NOT the manager PIN; stored only as a scrambled check value `WHO_PIN_HASH`,
   never write the digits in the repo; ask the owner if needed) → flag comes out. 5 wrong tries → 15-min lock
@@ -216,4 +216,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
 names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell · 2.20.4 "?" on the tucked gold flag · 2.20.5 Fri/Sat short-staff limit 9 or fewer · 2.21.0 change a name on the sheet · 2.21.1 name box offers report names · 2.22.0 Download / Print as two big brown icon-only buttons (owner's request; tan / cream options declined), embossed
-icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts.
+icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫".
