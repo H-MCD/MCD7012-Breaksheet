@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.22.1** (shown at the bottom of the left clipboard).
+- Current version: **V2.23.0** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -61,7 +61,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Everything else is client-side. Per-browser settings in `localStorage`:
   `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`. (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.22.1)
+## Current features (V2.23.0)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, then **two big half-width brown buttons**
   (raised: top shine, dark bottom edge, sink while pressed — no animation) with **embossed / stamped** gold-cream
@@ -123,7 +123,11 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Upload boxes show what was read: crew → `Store 7012 · Mon 16 – Sun 22 Nov`; swap →
   `N approved swaps · N cancelled` (+ store only if different). File name on hover.
 - Stores accepted: **7012, 7079**. Warnings: different stores; store not 7012/7079; swap report for
-  a **different week**; swaps for other days; person listed twice; shift > 12 h; unreadable rows.
+  a **different week**; swaps for other days; person listed twice; shift > 12 h; unreadable rows; **same person spelled
+  two ways** across the week (V2.23.0): `sameName` matches with different text → "look like the same person written
+  two ways"; near-misses (≤ 2 letters different on the squashed name, ≥ 6 letters, or same surname + first name ≤ 2
+  letters off) → "might be the same person". Shows the days each spelling is on; fixing the name clears it.
+  No false alarms on the owner's Oct and Nov reports (e.g. Aravindan Murthy vs Aravindhan Kumaran not flagged).
 - Tested on the owner's real reports (Oct 2026 week): all 403 + 15 rows read; deletes, re-adds,
   "Shift Assigned", "Shift Reassigned", time changes and the approved swap all handled correctly.
 
@@ -184,7 +188,7 @@ Since V2.16.1 the switches redraw the sheet on the right **instantly** (before, 
 ## Open / suggested next (owner hasn't chosen)
 - Swap summary says "1 cancelled" for a cancelled *drop* — offered rewording ("cancelled request").
 - Ask whether the black right clipboard should become lighter ("no dark background").
-- Ideas: warn on same person spelled two ways; breaks by shift length (print only);
+- Ideas: breaks by shift length (print only);
   tap a warning to jump to it; per-store manager lists; README; retry if libraries fail to load.
 
 ## How to test a change (do this every time)
@@ -216,4 +220,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
 names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell · 2.20.4 "?" on the tucked gold flag · 2.20.5 Fri/Sat short-staff limit 9 or fewer · 2.21.0 change a name on the sheet · 2.21.1 name box offers report names · 2.22.0 Download / Print as two big brown icon-only buttons (owner's request; tan / cream options declined), embossed
-icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫".
+icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫" · 2.23.0 same-person-two-spellings warning.
