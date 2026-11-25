@@ -175,6 +175,10 @@ Since V2.16.1 the switches redraw the sheet on the right **instantly** (before, 
 - Settings corner hidden until mouse-over (built as V2.18.0 on the branch, owner said don't push; undone).
   Hints for it (peeking corner, "settings ↘" note, text link, Settings sticky flag, word on the clip) — not wanted.
 - Colours setting in Settings (V2.14.0, reverted in V2.14.1). Bold/Darker highlight style (removed V2.17.0). Paper-curl page turn (off in V2.14.2).
+- Main-screen looks (Nov 2026): two wooden clipboards, clear acrylic clipboard + cool desk, desk props (cup / pen) —
+  owner: "leave the design choices". Also not wanted: name search / Ctrl+K, spotlight person, shift colour strips,
+  focus mode, two days side by side, time-of-day desk light, daily briefing, ask-a-question box, compare weeks,
+  notice-board poster, open-on-today ★, page stack, reading progress, warnings sticky note, tidier left clipboard.
 - Dark mode; dark desk colours (Green desk mat, Night shift); bright red Ketchup variant.
 - Themed name-suggestion card (V1.9.3, reverted) — keep the browser's own list.
 - Upload boxes as paper slips / envelope / label-maker tape / RECEIVED stamp / kitchen ticket rail /
