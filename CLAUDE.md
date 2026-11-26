@@ -11,7 +11,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Output: an **Excel download** (one worksheet per day) and a **Print** button (one A4 page per day).
 - The app is used **only to make and print the breaksheet** — no live, during-shift use.
 - Hosted from the `main` branch of `H-MCD/MCD7012-Breaksheet` (whatever is on `main` is live).
-- Current version: **V2.24.0** (shown at the bottom of the left clipboard).
+- Current version: **V2.25.0** (shown at the bottom of the left clipboard).
 
 ## Owner's rules (always follow)
 1. **Never change the Excel download** (`buildWorkbook()` — cells, fonts, widths, page setup, file name)
@@ -59,9 +59,9 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Add/remove need a **4-digit PIN** checked server-side: `apps-script/pin-check.gs` (PIN in Script
   Properties `MANAGER_PIN`; 5 wrong tries → 15-minute lock). Owner has installed it.
 - Everything else is client-side. Per-browser settings in `localStorage`:
-  `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`, `bs7012.printRev`. (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
+  `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`, `bs7012.printRev`, `bs7012.session` (auto-save, see Editing). (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
-## Current features (V2.24.0)
+## Current features (V2.25.0)
 **Layout / look ("desk")**
 - Left: wooden **clipboard** with title "Breaksheet Download", two upload boxes, then **two big half-width brown buttons**
   (raised: top shine, dark bottom edge, sink while pressed — no animation) with **embossed / stamped** gold-cream
@@ -131,7 +131,13 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Tested on the owner's real reports (Oct 2026 week): all 403 + 15 rows read; deletes, re-adds,
   "Shift Assigned", "Shift Reassigned", time changes and the approved swap all handled correctly.
 
-**Editing (none of these are remembered — a new upload starts fresh)**
+**Editing — auto-saved on the device (V2.25.0, owner chose "save option 1")**
+- After every `update()` the loaded reports + edits (`removed`, `added`, `addSeq`, `retimed`, `renamed`) + the shown
+  day are saved in `localStorage` `bs7012.session` (`saveSession`). On page load `restoreSession()` brings them back,
+  toast "Picked up where you left off ✓". `saveReady` stops start-up redraws from wiping the save before it is read.
+  A new upload clears the edits (as before) and the save is overwritten. Saves older than **21 days** are dropped.
+  Small green "✓ Saved on this device" line above the version (only while a report is loaded). Who's in unlock is
+  never saved. Excel / print unchanged.
 - **Cross out** a row: blue pen ✗ at row end (tap row first on phones) → pen strike-through (animations on:
   line draws across in 0.4 s; animations off: full line shows instantly for 0.65 s, then the row goes — V2.17.1); yellow
   sticky "undo ↶" note; "Crossed out" sticky note on the left with "put back".
@@ -226,4 +232,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
 names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell · 2.20.4 "?" on the tucked gold flag · 2.20.5 Fri/Sat short-staff limit 9 or fewer · 2.21.0 change a name on the sheet · 2.21.1 name box offers report names · 2.22.0 Download / Print as two big brown icon-only buttons (owner's request; tan / cream options declined), embossed
-icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫" · 2.23.0 same-person-two-spellings warning · 2.24.0 "Print last day first" switch.
+icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫" · 2.23.0 same-person-two-spellings warning · 2.24.0 "Print last day first" switch · 2.25.0 auto-save of reports + edits on the device.
