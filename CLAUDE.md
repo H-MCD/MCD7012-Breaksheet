@@ -133,10 +133,10 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 
 **Editing — auto-saved on the device (V2.25.0, owner chose "save option 1")**
 - After every `update()` the loaded reports + edits (`removed`, `added`, `addSeq`, `retimed`, `renamed`) + the shown
-  day are saved in `localStorage` `bs7012.session` (`saveSession`). On page load `restoreSession()` brings them back,
-  toast "Picked up where you left off ✓". `saveReady` stops start-up redraws from wiping the save before it is read.
+  day are saved in `localStorage` `bs7012.session` (`saveSession`). On page load `restoreSession()` brings them back
+  silently. `saveReady` stops start-up redraws from wiping the save before it is read.
   A new upload clears the edits (as before) and the save is overwritten. Saves older than **21 days** are dropped.
-  Small green "✓ Saved on this device" line above the version (only while a report is loaded). Who's in unlock is
+  **No save line and no "picked up" note** — owner asked for no notifications of the save. Who's in unlock is
   never saved. Excel / print unchanged.
 - **Cross out** a row: blue pen ✗ at row end (tap row first on phones) → pen strike-through (animations on:
   line draws across in 0.4 s; animations off: full line shows instantly for 0.65 s, then the row goes — V2.17.1); yellow
