@@ -59,7 +59,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Add/remove need a **4-digit PIN** checked server-side: `apps-script/pin-check.gs` (PIN in Script
   Properties `MANAGER_PIN`; 5 wrong tries → 15-minute lock). Owner has installed it.
 - Everything else is client-side. Per-browser settings in `localStorage`:
-  `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`, `bs7012.printRev`, `bs7012.session` (auto-save, see Editing). (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
+  `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`, `bs7012.printRev`. (`bs7012.session` = removed V2.25.0 auto-save; the app now deletes it on load.) (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
 ## Current features (V2.25.1)
 **Layout / look ("desk")**
@@ -131,14 +131,10 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
 - Tested on the owner's real reports (Oct 2026 week): all 403 + 15 rows read; deletes, re-adds,
   "Shift Assigned", "Shift Reassigned", time changes and the approved swap all handled correctly.
 
-**Editing — auto-saved on the device (V2.25.0, owner chose "save option 1")**
-- After every `update()` the loaded reports + edits (`removed`, `added`, `addSeq`, `retimed`, `renamed`) + the shown
-  day are saved in `localStorage` `bs7012.session` (`saveSession`). On page load `restoreSession()` brings them back
-  silently. `saveReady` stops start-up redraws from wiping the save before it is read.
-  A new upload clears the edits and the save is overwritten — **except** re-adding the exact same report
-  (same type/store/range/records, V2.25.1, owner asked) keeps the edits. Saves older than **21 days** are dropped.
-  **No save line and no "picked up" note** — owner asked for no notifications of the save. Who's in unlock is
-  never saved. Excel / print unchanged.
+**Editing (not remembered — a refresh or a new report starts fresh)**
+- **Same report added again keeps the edits** (V2.25.1, owner asked): `addFile` compares the new report with the
+  loaded one (`sig` = type/store/range/records); identical → crossed-out / added / retimed / renamed stay. Different → fresh.
+- On-device auto-save (V2.25.0) was **removed by the owner** in V2.25.1 — don't bring it back unless asked.
 - **Cross out** a row: blue pen ✗ at row end (tap row first on phones) → pen strike-through (animations on:
   line draws across in 0.4 s; animations off: full line shows instantly for 0.65 s, then the row goes — V2.17.1); yellow
   sticky "undo ↶" note; "Crossed out" sticky note on the left with "put back".
@@ -233,4 +229,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
 names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell · 2.20.4 "?" on the tucked gold flag · 2.20.5 Fri/Sat short-staff limit 9 or fewer · 2.21.0 change a name on the sheet · 2.21.1 name box offers report names · 2.22.0 Download / Print as two big brown icon-only buttons (owner's request; tan / cream options declined), embossed
-icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫" · 2.23.0 same-person-two-spellings warning · 2.24.0 "Print last day first" switch · 2.25.0 auto-save of reports + edits on the device (quiet, no notes) · 2.25.1 same report added again keeps the edits.
+icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫" · 2.23.0 same-person-two-spellings warning · 2.24.0 "Print last day first" switch · 2.25.0 auto-save of reports + edits on the device (quiet, no notes) · 2.25.1 auto-save removed (owner); same report added again keeps the edits.
