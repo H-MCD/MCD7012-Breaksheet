@@ -111,7 +111,9 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   **V2.27.3 editor simplified (owner):** a rule is now only **name · days · from–to · "Short at [N] or fewer" · "Tight at
   [N] or fewer" (empty = no tight) · on/off**. Stored as min = short + 1, good = tight + 1. Brief dips, skip dates and event
   date were **removed**; `cleanRule` forces dip 0, skip [], date ''. No description text, no "Put back the starting rules"
-  link, no standing "Shared on every device" line (only Saving… / Saved ✓ / errors). Heads up lines: "only 8 in" / "10 in". Below is the earlier, fuller design for reference. Each rule: **name**,
+  link, no standing "Shared on every device" line (only Saving… / Saved ✓ / errors). Heads up lines: "only 8 in" / "10 in".
+  **Brief = dimmer** (owner): any short / tight stretch of **15 min or less** is still listed but at 45% opacity with
+  "· 15 min" added (`brief`, `.closing .dim`); the "✗ … short" / "~ … tight" heading dims too when all its lines are brief. Below is the earlier, fuller design for reference. Each rule: **name**,
   **days** (chips Mon–Sun) **or one event date** ("Only on one date", owner asked), **from–to** (time pickers; to ≤ from =
   past midnight), **bare minimum** (below = ✗ short), **good number** (below but ≥ min = ~ tight), **brief dips** (one under
   the minimum for less than N min = tight), **on/off** switch (e.g. schools shut), **skip dates** (date-picker ranges, e.g.
