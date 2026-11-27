@@ -108,9 +108,10 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   checks. **Since V2.27.2 the rules live inside Who's in** (owner: not on the left clipboard): a **"⚙ Staffing rules"**
   button top-right of the Who's in page opens them on the big white sheet (`whoRules`; one persistent `rulesBox` moved
   into `#rules-slot`, kept in hidden `#rules-home` otherwise); **"← Back to Who's in"** returns; 2 columns on computers.
-  **V2.27.3 editor simplified (owner):** a rule is now only **name · days · from–to · bare minimum (fewer = short) · on/off**.
-  Good number, brief dips, skip dates and event date were **removed** from the editor; `cleanRule` forces good = min,
-  dip 0, skip [], date '' (so no "tight" lines any more). Below is the earlier, fuller design for reference. Each rule: **name**,
+  **V2.27.3 editor simplified (owner):** a rule is now only **name · days · from–to · "Short at [N] or fewer" · "Tight at
+  [N] or fewer" (empty = no tight) · on/off**. Stored as min = short + 1, good = tight + 1. Brief dips, skip dates and event
+  date were **removed**; `cleanRule` forces dip 0, skip [], date ''. No description text, no "Put back the starting rules"
+  link, no standing "Shared on every device" line (only Saving… / Saved ✓ / errors). Heads up lines: "only 8 in" / "10 in". Below is the earlier, fuller design for reference. Each rule: **name**,
   **days** (chips Mon–Sun) **or one event date** ("Only on one date", owner asked), **from–to** (time pickers; to ≤ from =
   past midnight), **bare minimum** (below = ✗ short), **good number** (below but ≥ min = ~ tight), **brief dips** (one under
   the minimum for less than N min = tight), **on/off** switch (e.g. schools shut), **skip dates** (date-picker ranges, e.g.
