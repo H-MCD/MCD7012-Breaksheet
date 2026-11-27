@@ -1,5 +1,5 @@
 /**
- * PIN check for the manager list (add / remove).
+ * PIN check for the manager list (add / remove) and for saving the staffing rules (rules_save).
  *
  * The breaksheet page sends the PIN as `pin` with every add or remove.
  * This check is what actually protects the list: without it, anyone with the
@@ -28,7 +28,7 @@ const PIN_LOCK_MINUTES = 15;
 
 function checkManagerPin_(e) {
   const action = String((e && e.parameter && e.parameter.action) || 'list');
-  if (action !== 'add' && action !== 'remove') return null;
+  if (action !== 'add' && action !== 'remove' && action !== 'rules_save') return null;
 
   const props = PropertiesService.getScriptProperties();
   const pin = props.getProperty('MANAGER_PIN');

@@ -58,8 +58,12 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   with `action=list|add|remove&name=…&pin=…`.
 - Add/remove need a **4-digit PIN** checked server-side: `apps-script/pin-check.gs` (PIN in Script
   Properties `MANAGER_PIN`; 5 wrong tries → 15-minute lock). Owner has installed it.
+- **Staffing rules** (V2.27.0) shared via the same script: `action=rules` (read) / `action=rules_save&rules=JSON&pin=`
+  (manager PIN; `pin-check.gs` now also guards `rules_save`). Code: `apps-script/staffing-rules.gs` (`handleRules_`,
+  stored in Script Property `STAFF_RULES`). **Owner must install it** (paste file, replace pin-check.gs, add 2 lines at
+  the top of doGet, redeploy). Until then the page says "Saved on this device only — the Google script needs the update".
 - Everything else is client-side. Per-browser settings in `localStorage`:
-  `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`, `bs7012.printRev`, `bs7012.rules` (Staffing rules). (`bs7012.session` = removed V2.25.0 auto-save; the app now deletes it on load.) (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
+  `bs7012.hlMgr`, `bs7012.boldEnd`, `bs7012.rings`, `bs7012.whoLock`, `bs7012.printRev`, `bs7012.rules2` (this device's copy of the shared Staffing rules). (`bs7012.rules` = never-released per-day version; deleted on load.) (`bs7012.session` = removed V2.25.0 auto-save; the app now deletes it on load.) (`bs7012.hiStyle*` = removed Bold/Darker choice; now ignored.) (`bs7012.look` was used by the removed Colours setting; now ignored.)
 
 ## Current features (V2.27.0)
 **Layout / look ("desk")**
@@ -96,17 +100,23 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   Who's in extras not picked: manager on duty, morning check, rest-gap check, hours per shift.
   Who's in UI fix (compact half-height cards + one-line list without the "N go home" badges) mocked up — owner: "let it stay this way".
   Open: Day end 19:00 assumed (owner said 6, 7 or 8 pm); on-screen only assumed.
-- **Heads up follows the tapped shift card** (V2.20.2, owner): **Day** → day check only; **Evening** → evening +
-  closing (00:00/00:30); **Overnight** → closing; **Morning** → no checks (no note). Title "Heads up · Evening · this week".
+- **Heads up follows the tapped shift card** (V2.20.2, owner; since V2.27.0 by Staffing rules overlapping the card):
+  **Evening** / **Overnight** also get the closing check (00:00/00:30). Title "Heads up · Evening · this week".
 - **Friday & Saturday** (V2.20.5, owner): Day and Evening checks warn at **9 or fewer** in (other days 8 or fewer) — now the
   defaults of the Staffing rules below.
-- **Smarter short check / Staffing rules** (V2.27.0, owner: "work smarter, not one command"): `shortFor` grades each low
-  stretch: **one under** (= the "short at" number) for **less than the allowed minutes** (default **30**) → **"~ tight"** soft
-  brown line on the note (owner chose show-as-tight, not hide); one under for longer, or **two under** → **✗ short**;
-  **three or more under** → **✗✗ … very short** (bold red). `low` = short/very only (`ok` ignores tight); `tight` list separate.
-  **Settings → "Staffing rules"** card (only visible while Who's in is unlocked, `rulesUI`): per day Mon–Sun "short at N or
-  fewer" + "OK under N min", saved per device `bs7012.rules` (`rules[getUTCDay()]`), "Reset to 8 / 9 and 30 min" link.
-  Nov report: Wed 11 / Thu 12 22:45–23:00 (8 in, 15 min) now "tight"; Mon 16 21:30–23:00 stays short. Closing check unchanged.
+- **Staffing rules** (V2.27.0, owner: "work smarter", "everything entered manually"): replaces the fixed Day / Evening
+  checks. Settings → **Staffing rules** card (only visible while Who's in is unlocked, `rulesUI`). Each rule: **name**,
+  **days** (chips Mon–Sun) **or one event date** ("Only on one date", owner asked), **from–to** (time pickers; to ≤ from =
+  past midnight), **bare minimum** (below = ✗ short), **good number** (below but ≥ min = ~ tight), **brief dips** (one under
+  the minimum for less than N min = tight), **on/off** switch (e.g. schools shut), **skip dates** (date-picker ranges, e.g.
+  school holidays). Add / Edit / Delete (confirm) / "Put back the starting rules". Saving asks the **manager PIN** once per
+  page load (`commitRules`; reverts on cancel / no connection). Three or more under the minimum → ✗✗ very short.
+  Starting set (`RULES_DEF`): Day Sun–Thu 11–19 min 9 · Day Fri/Sat min 10 · Evening Sun–Thu 19–23 min 9 · Evening Fri/Sat
+  min 10 (all good = min, dips < 30 min = tight) · **School rush Mon–Fri 14:40–15:15 min 10 good 11** · **Dinner rush
+  Fri/Sat 17:30–19:30 min 20 good 22** (owner's numbers).
+  Heads up shows each rule by name ("✗ Dinner rush short · 18:00–18:45 only 19 in · min 20" / "~ School rush tight · 10 in ·
+  good 11"); a rule shows under every shift card its times overlap; Evening + Overnight also show closing.
+  Engine: `ruleOn(r, d)`, `checkRule(d, r)` (`low` = short/very, `tight`), `cleanRules` sanitises everything loaded.
 - **"Heads up" note** (V2.20.1) also has a **Day check**: any moment **11:00 up to 19:00** with **8 or fewer** in →
   "✗ Day short" (`dayFor`; both use `shortFor(d, from, to)`).
 - **"Heads up" note** (V2.20.0) adds an **evening check**: any moment from **19:00 up to (not incl.) 23:00** (owner moved it from 22:30) with
@@ -243,4 +253,4 @@ V2.12.0 "what was read" summaries (renumbered by owner) · 2.12.1 hairline grid 
 2.18.0 was used on the branch for the never-released hover-only Settings corner) · 2.18.2 phones: sheet on top + clip
 opens the PIN; PIN boxes show dots (●), never the digits · 2.18.3 Who's in: green = starting, red = going home;
 names before the "N in" count · 2.18.4 Who's in lists starters' names too (green ↑ / red ↓) · 2.19.0 Closing check sticky note · 2.20.0 "Heads up" note also flags a short evening (≤ 8 in, 19:00–23:00) · 2.20.1 also a short Day (≤ 8 in, 11:00–19:00) · 2.20.2 note follows the tapped shift card · 2.20.3 iPhone fix: ✗ / cross-out line pinned to the last cell · 2.20.4 "?" on the tucked gold flag · 2.20.5 Fri/Sat short-staff limit 9 or fewer · 2.21.0 change a name on the sheet · 2.21.1 name box offers report names · 2.22.0 Download / Print as two big brown icon-only buttons (owner's request; tan / cream options declined), embossed
-icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫" · 2.23.0 same-person-two-spellings warning · 2.24.0 "Print last day first" switch · 2.25.0 auto-save of reports + edits on the device (quiet, no notes) · 2.25.1 auto-save removed (owner); same report added again keeps the edits · 2.26.0 Christmas hat on the title (27 Nov – 31 Dec) · 2.27.0 graded short check (tight / short / very short) + Staffing rules in Settings.
+icons, Ctrl/⌘+S / Ctrl/⌘+P shortcuts · 2.22.1 tucked flag says "Access restricted 🚫" · 2.23.0 same-person-two-spellings warning · 2.24.0 "Print last day first" switch · 2.25.0 auto-save of reports + edits on the device (quiet, no notes) · 2.25.1 auto-save removed (owner); same report added again keeps the edits · 2.26.0 Christmas hat on the title (27 Nov – 31 Dec) · 2.27.0 Staffing rules: your own rules per days / event date / times with minimum + good number, on/off, skip dates, shared on every device.
