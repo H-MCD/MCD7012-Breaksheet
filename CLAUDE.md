@@ -94,6 +94,7 @@ without re-asking. Keep it up to date whenever a decision or feature changes.
   Also declined (Nov 2026, Who's in look): OK/SHORT rubber stamps on the shift cards, green/red name chips (mocked up, dropped);
   ideas not picked: sticky-note cards, pen-drawn chart, big number header, mini bars per card, ruled-paper texture, gold touches.
   Who's in extras not picked: manager on duty, morning check, rest-gap check, hours per shift.
+  Who's in UI fix (compact half-height cards + one-line list without the "N go home" badges) mocked up — owner: "let it stay this way".
   Open: Day end 19:00 assumed (owner said 6, 7 or 8 pm); on-screen only assumed.
 - **Heads up follows the tapped shift card** (V2.20.2, owner): **Day** → day check only; **Evening** → evening +
   closing (00:00/00:30); **Overnight** → closing; **Morning** → no checks (no note). Title "Heads up · Evening · this week".
